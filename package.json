@@ -1,0 +1,24 @@
+{
+  "name": "dotwallet-test",
+  "version": "1.0.0",
+  "description": "Trying out features of the DotWallet for Developers platform",
+  "main": "index.js",
+  "scripts": {
+    "serve": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jewcub/dotwallet-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jewcub/dotwallet-test/issues"
+  },
+  "homepage": "https://github.com/Jewcub/dotwallet-test#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
