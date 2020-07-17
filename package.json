@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Jewcub/dotwallet-test#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "express": "^4.17.1"
   }
 }
