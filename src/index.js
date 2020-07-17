@@ -8,21 +8,25 @@ const port = process.env.PORT || 3000;
 app.get('/auth', async (req, res) => {
   console.log('req, res', req, res);
   const code = req.params.code;
-  const result = await axios.post(
-    'https://www.ddpurse.com/openapi/platform/access_token',
-    {
-      app_id: 'YOUR_APP_ID',
-      secret: 'YOUR_APP_SECRET',
-      code: code,
-    }
-  );
-  const accessToken = result.data.data.access_token;
-  if (accessToken) {
-    const userInfo = await axios.get(
-      'https://www.ddpurse.com/platform/openapi/get_user_info?access_token=' +
-        accessToken
+  try {
+    const result = await axios.post(
+      'https://www.ddpurse.com/openapi/platform/access_token',
+      {
+        app_id: 'YOUR_APP_ID',
+        secret: 'YOUR_APP_SECRET',
+        code: code,
+      }
     );
-    res.redirect('/home/?name=' + userName);
+    const accessToken = result.data.data.access_token;
+    if (accessToken) {
+      const userInfo = await axios.get(
+        'https://www.ddpurse.com/platform/openapi/get_user_info?access_token=' +
+          accessToken
+      );
+      res.redirect('/home/?name=' + userName);
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 
