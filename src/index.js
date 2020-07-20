@@ -4,17 +4,18 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.static('src'));
-// app.use(express.static('src/assets'));
+const YOUR_APP_SECRET = process.env.APP_SECRET;
+const YOUR_APP_ID = process.env.APP_ID;
 
 app.get('/auth', async (req, res) => {
   // console.log('req, res', req, res);
-  const code = req.params.code;
   try {
+    const code = req.params.code;
     const result = await axios.post(
       'https://www.ddpurse.com/openapi/platform/access_token',
       {
-        app_id: 'YOUR_APP_ID',
-        secret: 'YOUR_APP_SECRET',
+        app_id: YOUR_APP_ID,
+        secret: YOUR_APP_SECRET,
         code: code,
       }
     );
@@ -24,7 +25,7 @@ app.get('/auth', async (req, res) => {
         'https://www.ddpurse.com/platform/openapi/get_user_info?access_token=' +
           accessToken
       );
-      res.redirect('/home/?name=' + userName);
+      res.redirect('/home/?name=' + userInfo.data.data.user_name);
     }
   } catch (err) {
     console.log(err);

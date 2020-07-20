@@ -9,19 +9,20 @@
 
 <body>
   <a href="https://www.ddpurse.com/openapi/get_code?app_id=YOUR_APP_ID&redirect_uri=YOUR_REDIRECT_URI">
+    BLANK BUTTON
     <img src="./assets/dotwallet-login.png" alt="dotwallet-login">
   </a>
   <a
-    href="https://www.ddpurse.com/openapi/get_code?app_id=89d001043806644fdb4fb14099ff6be5&redirect_uri=http://127.0.0.1:5500/src/index">
+    href="https://www.ddpurse.com/openapi/get_code?app_id=89d001043806644fdb4fb14099ff6be5&redirect_uri=http://localhost:3000">
+    TO LOCALHOST
+    <img src=" ./assets/dotwallet-login.png" alt="dotwallet-login">
+  </a>
+  <a
+    href="https://www.ddpurse.com/openapi/get_code?app_id=89d001043806644fdb4fb14099ff6be5&redirect_uri=https://dotwallet-test.herokuapp.com/home.html">
+    TO HEROKU HOSTED SERVER
     <img src="./assets/dotwallet-login.png" alt="dotwallet-login">
   </a>
 
 </body>
-
-<script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('code')
-</script>
-484dfc41e1397fc7a924d34988f0b86b
 
 </html>

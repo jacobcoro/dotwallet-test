@@ -10,11 +10,12 @@
 <body>
   <h1>Hello </h1>
   <h1 id="user-name"></h1>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const userName = urlParams.get('user-name')
+    document.getElementById('user-name').innerHTML = userName
+  </script>
 </body>
-<script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const userName = urlParams.get('user-name')
-  document.getElementById('user-name').innerHTML = userName
-</script>
+
 
 </html>
