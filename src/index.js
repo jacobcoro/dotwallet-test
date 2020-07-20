@@ -34,7 +34,10 @@ app.get('/auth', async (req, res) => {
         'https://www.ddpurse.com/platform/openapi/get_user_info?access_token=' +
           accessToken
       );
-      console.log('==============user info result==============\n', userInfo);
+      console.log(
+        '==============user info result==============\n',
+        userInfo.data
+      );
       res.redirect(
         '/restricted-page/?name=' +
           userInfo.data.data.user_name +
