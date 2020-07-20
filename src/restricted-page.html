@@ -10,10 +10,13 @@
 <body>
   <h1>Hello </h1>
   <h1 id="user-name"></h1>
+  <img id="user-pic" src="" alt="">
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const userName = urlParams.get('user-name')
+    const userName = urlParams.get('name')
     document.getElementById('user-name').innerHTML = userName
+    const userPic = urlParams.get('pic')
+    document.getElementById('user-pic').src = userPic
   </script>
 </body>
 
