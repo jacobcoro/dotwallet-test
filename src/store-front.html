@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Products</h1>
+  <ul>
+    <li>
+      <span>Bananas:
+        <img src="https://www.specialtyproduce.com/sppics/919.png" alt="banana" width="50px">
+        <button id="banana-button" type="button"> 31 satoshis</button>
+      </span>
+    </li>
+  </ul>
+  <!-- UUID package -->
+  <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
+  <script>
+    const orderData = {
+      merchant_order_sn: uuidv4(),
+      item_name: 'bananas',
+      order_amount: 31,
+      nonce_str: new Date().toString()
+    }
+    document.getElementById('banana-button').addEventListener('click', () => {
+      fetch('http://192.168.1.142:3000/payment', {
+        method: 'POST',
+        body: JSON.stringify(orderData),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      })
+    })
+  </script>
+</body>
+
+</html>
