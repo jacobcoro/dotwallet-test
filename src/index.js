@@ -4,12 +4,15 @@ const path = require('path');
 const dotenv = require('dotenv');
 const app = express();
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const url = require('url');
 
 dotenv.config({ path: './.env' });
 const PORT = process.env.PORT || 3000;
 const YOUR_APP_SECRET = process.env.APP_SECRET;
 const YOUR_APP_ID = process.env.APP_ID;
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('src'));
 
@@ -44,10 +47,13 @@ app.get('/auth', async (req, res) => {
         userInfoRequest.data
       );
       res.redirect(
-        '/restricted-page/?name=' +
-          userInfoRequest.data.data.user_name +
-          '&pic=' +
-          userInfoRequest.data.data.user_avatar
+        url.format({
+          pathname: '/restricted-page/',
+          query: {
+            name: userInfoRequest.data.data.user_name,
+            pic: userInfoRequest.data.data.user_avatar,
+          },
+        })
       );
     }
   } catch (err) {
@@ -64,36 +70,39 @@ app.get('/store-front', async (req, res) => {
   res.sendFile(path.join(__dirname + '/store-front.html'));
 });
 
-app.post('/payment', async (req, res) => {
+app.post('/sign-payment-order', async (req, res) => {
   try {
     const orderData = req.body;
     console.log('==============orderData==============\n', orderData);
-    const orderDataSigned = {
+    responseJson = {
       ...orderData,
       sign: getSignature(orderData, YOUR_APP_SECRET),
     };
-    const paymentRequest = await axios.post(
-      'https://www.dotwallet.com/platform/openapi/apply_order',
-      orderDataSigned
-    );
-    console.log('==============paymentRequest==============\n', paymentRequest);
-
-    res.redirect(
-      `https://www.ddpurse.com/wallet/open/pay?order_sn=${paymentRequest.data.data.order_sn}`
-    );
-    // const orderStatus = await axios.post(
-    //   'https://www.dotwallet.com/platform/openapi/search_order',
-    //   {
-    //     app_id: YOUR_APP_ID,
-    //     secret: YOUR_APP_SECRET,
-    //     merchant_order_sn: orderData.merchant_order_sn,
-    //   }
-    // );
-    // console.log('==============orderStatus==============\n', orderStatus);
+    console.log(responseJson);
+    res.json({
+      ...orderData,
+      sign: getSignature(orderData, YOUR_APP_SECRET),
+    });
+    setTimeout(() => {
+      orderStatus(orderData.merchant_order_sn);
+    }, 1000 * 120);
   } catch (err) {
-    console.log(err.response);
+    console.log('==============err==============\n', err);
   }
 });
+
+const orderStatus = (merchant_order_sn) => {
+  axios
+    .post('https://www.dotwallet.com/platform/openapi/search_order', {
+      app_id: YOUR_APP_ID,
+      secret: YOUR_APP_SECRET,
+      merchant_order_sn: merchant_order_sn,
+    })
+    .then((response) => {
+      let orderStatus = response.json();
+      console.log('==============orderStatus==============\n', orderStatus);
+    });
+};
 
 const md5 = require('md5');
 const crypto = require('crypto');
