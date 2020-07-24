@@ -69,39 +69,60 @@ app.get('/restricted-page', async (req, res) => {
 app.get('/store-front', async (req, res) => {
   res.sendFile(path.join(__dirname + '/store-front.html'));
 });
-
-app.post('/sign-payment-order', async (req, res) => {
+app.get('/store-order-fulfilled', async (req, res) => {
+  res.sendFile(path.join(__dirname + '/store-order-fulfilled.html'));
+});
+app.post('/create-order', async (req, res) => {
   try {
     const orderData = req.body;
     console.log('==============orderData==============\n', orderData);
-    responseJson = {
+    const signedOrder = {
       ...orderData,
       sign: getSignature(orderData, YOUR_APP_SECRET),
     };
-    console.log(responseJson);
-    res.json({
-      ...orderData,
-      sign: getSignature(orderData, YOUR_APP_SECRET),
-    });
-    setTimeout(() => {
-      orderStatus(orderData.merchant_order_sn);
-    }, 1000 * 120);
+    const orderSnResponse = await axios.post(
+      'https://www.ddpurse.com/openapi/create_order',
+      signedOrder
+    );
+    const orderSnData = orderSnResponse.data;
+    console.log('==============orderSnData==============', orderSnData);
+    if (orderSnData.data && orderSnData.data.order_sn) {
+      res.json({
+        order_sn: orderSnData.data.order_sn,
+      });
+      setTimeout(() => {
+        orderStatus(orderData.merchant_order_sn);
+      }, 1000 * 120);
+    } else {
+      res.json({
+        error: orderSnData.msg,
+      });
+      throw orderSnResponse;
+    }
   } catch (err) {
     console.log('==============err==============\n', err);
   }
 });
 
-const orderStatus = (merchant_order_sn) => {
-  axios
-    .post('https://www.dotwallet.com/platform/openapi/search_order', {
-      app_id: YOUR_APP_ID,
-      secret: YOUR_APP_SECRET,
-      merchant_order_sn: merchant_order_sn,
-    })
-    .then((response) => {
-      let orderStatus = response.json();
-      console.log('==============orderStatus==============\n', orderStatus);
-    });
+app.get('/payment-result', (req, res) => {
+  console.log('==============payment-result req==============\n', req);
+});
+
+const orderStatus = async (merchant_order_sn) => {
+  try {
+    const orderStatusResponse = await axios.post(
+      'https://www.ddpurse.com/platform/openapi/search_order',
+      {
+        app_id: YOUR_APP_ID,
+        secret: YOUR_APP_SECRET,
+        merchant_order_sn: merchant_order_sn,
+      }
+    );
+    const orderStatusData = orderStatusResponse.data;
+    console.log('==============orderStatus==============\n', orderStatusData);
+  } catch (err) {
+    console.log('==============err==============\n', err);
+  }
 };
 
 const md5 = require('md5');

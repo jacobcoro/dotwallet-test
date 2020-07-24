@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
+  <body>
+    <a href="http://192.168.1.142:3000/store-front">STORE</a>
 
-<body>
-  <h1>Hello </h1>
-  <h1 id="user-name"></h1>
-  <img id="user-pic" src="" alt="">
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const userName = urlParams.get('name')
-    document.getElementById('user-name').innerHTML = userName
-    const userPic = urlParams.get('pic')
-    document.getElementById('user-pic').src = userPic
-  </script>
-</body>
-
-
+    <h1 id="user-name"></h1>
+    <img id="user-pic" src="" alt="" />
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const userName = urlParams.get('name');
+      document.getElementById('user-name').innerHTML = 'Hello ' + userName;
+      const userPic = urlParams.get('pic');
+      document.getElementById('user-pic').src = userPic;
+    </script>
+  </body>
 </html>

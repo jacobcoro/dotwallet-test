@@ -13,9 +13,10 @@
         <span
           >Bananas:
           <img src="./assets/bananas.png" alt="bananas" width="50px" />
-          <button id="banana-button" type="button">31 satoshis</button>
+          <button id="banana-button" type="button">546 satoshis</button>
         </span>
       </li>
+      <p id="order-status"></p>
     </ul>
     <!-- UUID package -->
     <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
@@ -23,14 +24,18 @@
       document
         .getElementById('banana-button')
         .addEventListener('click', async () => {
+          document.getElementById('order-status').innerText = '';
           const orderData = {
+            app_id: '89d001043806644fdb4fb14099ff6be5', // replace with your app id
             merchant_order_sn: uuidv4(),
             item_name: 'bananas',
-            order_amount: 31000,
+            order_amount: 546, // can't be lower than 546
             nonce_str: new Date().toString(),
+            notice_uri: 'http://192.168.1.142:3000/payment-result', // replace 192.168.1.142 with your IP
+            redirect_uri: 'http://192.168.1.142:3000/store-order-fulfilled', // replace 192.168.1.142 with your IP
           };
-          const response = await fetch(
-            'http://192.168.1.142:3000/sign-payment-order',
+          const orderSnResponse = await fetch(
+            'http://192.168.1.142:3000/create-order', // replace 192.168.1.142 with your IP
             {
               method: 'POST',
               body: JSON.stringify(orderData),
@@ -39,14 +44,13 @@
               },
             }
           );
-          const orderWithSignature = await response.json();
-          console.log('orderWithSignature', orderWithSignature);
-          const url = new URL('https://www.ddpurse.com/wallet/open/pay');
-          url.search = new URLSearchParams({
-            ...orderWithSignature,
-          });
-          console.log('url', url);
-          window.location.href = url;
+          const orderSnData = await orderSnResponse.json();
+          if (orderSnData.order_sn) {
+            console.log('orderSn', orderSnData.order_sn);
+            window.location.href = `https://www.ddpurse.com/desktop/open/order?order_sn=${orderSnData.order_sn}`;
+          } else
+            document.getElementById('order-status').innerText =
+              'error: ' + orderSnData.error;
         });
     </script>
   </body>
