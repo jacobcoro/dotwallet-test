@@ -1,35 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <title>Document</title>
+</head>
+
+<body>
+  <nav class="navbar navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+      <img src="./assets/logo/awesome-logo.svg" width="30" height="30" alt="">
+    </a>
+  </nav>
+  <div class="container d-flex d-flex flex-column align-items-center justify-content-center">
     <h1>Thank you</h1>
     <h3>for your purchase of</h3>
+    <ul class="list-group">
+      <p id="item_name" class="list-group-item"></p>
+      <p id="order_amount" class="list-group-item"></p>
+      <a href="" id="pay_txid" class="btn btn-secondary ">Inspect your transaction on the
+        blockchain</a>
+    </ul>
 
-    <p id="item_name"></p>
-    <p id="order_amount"></p>
-    <a href="" id="pay_txid">Inspect your transaction on the blockchain</a>
-    <script>
-      const urlParams = new URLSearchParams(window.location.search);
-      const itemName = urlParams.get('item_name');
-      const orderAmount = urlParams.get('order_amount');
-      const txId = urlParams.get('pay_txid');
-      if (itemName && orderAmount && txId) {
-        document.getElementById('item_name').innerHTML = 'item: ' + itemName;
-        document.getElementById('order_amount').innerHTML =
-          'price: ' + orderAmount + ' satoshis';
-        document.getElementById('pay_txid').href =
-          'https://satoshi.io/tx/' + txId;
-      } else {
-        alert('Transaction did not complete');
-      }
+  </div>
 
-      // the params will look like this
-      // http://192.168.1.142:3000/store-order-fulfilled?app_id=89d001043806644fdb4fb14099ff6be5&order_sn=f16896efdb44b92a56589bdb66d19ab6&merchant_order_sn=06ded051-7c48-4389-80db-0791d34b6932&item_name=bananas&receive_address=1G71iLTFCvC9xc4T8CgswwhEKAVJMxGErV&user_refund_address=&order_amount=546&pay_txid=d798da78c8ee31ccd02bdcc2aa11168479bed4b796c066d3d81fdd06e9aa4bcf&status=1&nonce_str=37725297&sign=adef5fc52468ee96c51d5bd231a38f6e93cf34d81a31207b5ba3f746ce942bd3
-    </script>
-  </body>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemName = urlParams.get('item_name');
+    const orderAmount = urlParams.get('order_amount');
+    const txId = urlParams.get('pay_txid');
+    if (itemName && orderAmount && txId) {
+      document.getElementById('item_name').innerHTML = 'item: ' + itemName;
+      document.getElementById('order_amount').innerHTML =
+        'price: ' + orderAmount + ' satoshis';
+      document.getElementById('pay_txid').href =
+        'https://satoshi.io/tx/' + txId;
+    } else {
+      alert('Transaction did not complete');
+    }
+
+    // the params will look like this
+    // http://192.168.1.142:3000/store-order-fulfilled?app_id=89d001043806644fdb4fb14099ff6be5&order_sn=f16896efdb44b92a56589bdb66d19ab6&merchant_order_sn=06ded051-7c48-4389-80db-0791d34b6932&item_name=bananas&receive_address=1G71iLTFCvC9xc4T8CgswwhEKAVJMxGErV&user_refund_address=&order_amount=546&pay_txid=d798da78c8ee31ccd02bdcc2aa11168479bed4b796c066d3d81fdd06e9aa4bcf&status=1&nonce_str=37725297&sign=adef5fc52468ee96c51d5bd231a38f6e93cf34d81a31207b5ba3f746ce942bd3
+  </script>
+</body>
+
 </html>

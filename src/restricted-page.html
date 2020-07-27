@@ -1,22 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
-    <a href="http://192.168.1.142:3000/store-front">STORE</a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <title>Document</title>
+</head>
 
+<body>
+  <nav class="navbar navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+      <img src="./assets/logo/awesome-logo.svg" width="30" height="30" alt="">
+    </a>
+    <a href="http://192.168.1.142:3000/store-front" class="navlink"></a>
+  </nav>
+  <div class="p-3 container d-flex d-flex flex-column align-items-center justify-content-center">
     <h1 id="user-name"></h1>
-    <img id="user-pic" src="" alt="" />
-    <script>
-      const urlParams = new URLSearchParams(window.location.search);
-      const userName = urlParams.get('name');
-      document.getElementById('user-name').innerHTML = 'Hello ' + userName;
-      const userPic = urlParams.get('pic');
-      document.getElementById('user-pic').src = userPic;
-    </script>
-  </body>
+    <img id="user-pic" src="" alt="profile pic" />
+    <a class="btn btn-primary btn-lg m-2" href="http://192.168.1.142:3000/store-front">Go to the store</a>
+  </div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const userName = urlParams.get('name');
+    document.getElementById('user-name').innerHTML = 'Hello ' + userName;
+    const userPic = urlParams.get('pic');
+    document.getElementById('user-pic').src = userPic;
+  </script>
+</body>
+
 </html>

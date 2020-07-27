@@ -1,57 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <title>Store</title>
+</head>
+
+<body>
+  <nav class="navbar navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+      <img src="./assets/logo/awesome-logo.svg" width="30" height="30" alt="">
+    </a>
+  </nav>
+  <div class="container d-flex d-flex flex-column align-items-center justify-content-center">
     <h1>Products</h1>
-    <ul>
-      <li>
-        <span
-          >Bananas:
-          <img src="./assets/bananas.png" alt="bananas" width="50px" />
-          <button id="banana-button" type="button">546 satoshis</button>
-        </span>
+    <ul class="list-group">
+      <li class="list-group-item mb-2">
+        Bananas
+        <img src="./assets/bananas.png" alt="bananas" width="50px" />
+        <button class="btn btn-secondary btn-sm" id="banana-button" type="button">546 satoshis</button>
+      </li>
+      <li class="list-group-item mb-2">
+        Bananas
+        <img src="./assets/bananas.png" alt="bananas" width="50px" />
+        <button class="btn btn-secondary btn-sm" id="banana-button" type="button">546 satoshis</button>
+      </li>
+      <li class="list-group-item mb-2">
+        Bananas
+        <img src="./assets/bananas.png" alt="bananas" width="50px" />
+        <button class="btn btn-secondary btn-sm" id="banana-button" type="button">546 satoshis</button>
       </li>
       <p id="order-status"></p>
     </ul>
-    <!-- UUID package -->
-    <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
-    <script>
-      document
-        .getElementById('banana-button')
-        .addEventListener('click', async () => {
-          document.getElementById('order-status').innerText = '';
-          const orderData = {
-            app_id: '89d001043806644fdb4fb14099ff6be5', // replace with your app id
-            merchant_order_sn: uuidv4(),
-            item_name: 'bananas',
-            order_amount: 546, // can't be lower than 546
-            nonce_str: new Date().toString(),
-            notice_uri: 'http://192.168.1.142:3000/payment-result', // replace 192.168.1.142 with your IP
-            redirect_uri: 'http://192.168.1.142:3000/store-order-fulfilled', // replace 192.168.1.142 with your IP
-          };
-          const orderSnResponse = await fetch(
-            'http://192.168.1.142:3000/create-order', // replace 192.168.1.142 with your IP
-            {
-              method: 'POST',
-              body: JSON.stringify(orderData),
-              headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-              },
-            }
-          );
-          const orderSnData = await orderSnResponse.json();
-          if (orderSnData.order_sn) {
-            console.log('orderSn', orderSnData.order_sn);
-            window.location.href = `https://www.ddpurse.com/desktop/open/order?order_sn=${orderSnData.order_sn}`;
-          } else
-            document.getElementById('order-status').innerText =
-              'error: ' + orderSnData.error;
-        });
-    </script>
-  </body>
+  </div>
+
+  <!-- UUID package -->
+  <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
+  <script>
+    document
+      .getElementById('banana-button')
+      .addEventListener('click', async () => {
+        document.getElementById('order-status').innerText = '';
+        const orderData = {
+          app_id: '89d001043806644fdb4fb14099ff6be5', // replace with your app id
+          merchant_order_sn: uuidv4(),
+          item_name: 'bananas',
+          order_amount: 546, // can't be lower than 546
+          nonce_str: new Date().toString(),
+          notice_uri: 'http://192.168.1.142:3000/payment-result', // replace 192.168.1.142 with your IP
+          redirect_uri: 'http://192.168.1.142:3000/store-order-fulfilled', // replace 192.168.1.142 with your IP
+        };
+        const orderSnResponse = await fetch(
+          'http://192.168.1.142:3000/create-order', // replace 192.168.1.142 with your IP
+          {
+            method: 'POST',
+            body: JSON.stringify(orderData),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          }
+        );
+        const orderSnData = await orderSnResponse.json();
+        if (orderSnData.order_sn) {
+          console.log('orderSn', orderSnData.order_sn);
+          window.location.href = `https://www.ddpurse.com/desktop/open/order?order_sn=${orderSnData.order_sn}`;
+        } else
+          document.getElementById('order-status').innerText =
+          'error: ' + orderSnData.error;
+      });
+  </script>
+</body>
+
 </html>

@@ -46,7 +46,8 @@ app.get('/auth', async (req, res) => {
         '==============user info result==============\n',
         userInfoRequest.data
       );
-      res.redirect(
+      //192.168.1.142:3000/restricted-page/?name=Jacob%20Cohen-Rosenthal&pic=https%3A%2F%2Fplatform-lookaside.fbsbx.com%2Fplatform%2Fprofilepic%2F%3Fasid%3D668826769321%26height%3D50%26width%3D50%26ext%3D1598068390%26hash%3DAeQ88_bmFTMx4t1I
+      http: res.redirect(
         url.format({
           pathname: '/restricted-page/',
           query: {
@@ -75,7 +76,8 @@ app.get('/store-order-fulfilled', async (req, res) => {
 app.post('/create-order', async (req, res) => {
   try {
     const orderData = req.body;
-    console.log('==============orderData==============\n', orderData);
+    // check if recieve address is dev's own
+    console.log('==============or derData==============\n', orderData);
     const signedOrder = {
       ...orderData,
       sign: getSignature(orderData, YOUR_APP_SECRET),
