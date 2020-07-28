@@ -15,18 +15,21 @@
       <img src="./assets/logo/awesome-logo.svg" width="30" height="30" alt="">
     </a>
   </nav>
+
   <div class="container d-flex d-flex flex-column align-items-center justify-content-center">
     <img class="img-fluid" style="max-height: 500px;" src="./assets/logo/default.png" alt="app logo" />
     <a id="button-link" class="img-fluid m-0">
       <img src="./assets/dotwallet-login.png" alt="dotwallet-login" />
     </a>
   </div>
-  <script src="./config.js">
-  </script>
+
+  <script src="./config.js"></script>
+
   <script>
     document.getElementById('button-link').href =
       `https://www.ddpurse.com/openapi/get_code?app_id=${APP_ID}&redirect_uri=${APP_URL}auth/`
   </script>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
   </script>

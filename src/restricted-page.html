@@ -12,15 +12,17 @@
 <body>
   <nav class="navbar navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="/">
-      <img src="./assets/logo/awesome-logo.svg" width="30" height="30" alt="" />
+      <img src="./assets/logo/awesome-logo.svg" width="30" height="30" alt="">
     </a>
-    <a id="store-link" class="navlink"></a>
+    <a id="store-link" class="navlink">Store</a>
   </nav>
+
   <div class="p-3 container d-flex d-flex flex-column align-items-center justify-content-center">
     <h1 id="user-name"></h1>
     <img id="user-pic" src="" alt="profile pic" />
     <a id="store-button" class="btn btn-primary btn-lg m-2">Go to the store</a>
   </div>
+
   <script src="./config.js"></script>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -37,6 +39,7 @@
     document.getElementById('store-link').href = APP_URL + 'store-front';
     document.getElementById('store-button').href = APP_URL + 'store-front';
   </script>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
   </script>
