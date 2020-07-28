@@ -92,7 +92,7 @@ function refreshAccess(refreshToken, expiry) {
   setTimeout(async () => {
     refreshResult = await getAccessToken(refreshToken);
     refreshAccess(refreshResult.refreshToken, refreshResult.expiry);
-  }, expiry);
+  }, expiry * 1000 - 3000);
 }
 
 app.get('/restricted-page', async (req, res) => {
