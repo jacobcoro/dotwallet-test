@@ -6,7 +6,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const url = require('url');
-import config from './config';
 
 dotenv.config({ path: './.env' });
 const PORT = process.env.PORT || 3000;
@@ -188,5 +187,11 @@ function getSignature(orderData, appSecret) {
 }
 
 app.listen(PORT, () =>
-  console.log(`DotWallet example app listening at ${config.APP_URL}`)
+  console.log(
+    `DotWallet example app listening at ${
+      process.env.NODE_ENV === 'production'
+        ? 'production host'
+        : 'localhost:' + PORT
+    }`
+  )
 );
