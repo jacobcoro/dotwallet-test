@@ -48,11 +48,12 @@ app.get('/auth', async (req, res) => {
         '==============user info result==============\n',
         userInfoRequest.data
       );
-      // this will keep getting the refresh/access tokens as they expire
-      refreshAccess(
-        accessTokenRequest.data.data.refresh_token,
-        accessTokenRequest.data.data.expires_in
-      );
+      // this refreshAccess function will keep getting the refresh/access tokens as they expire
+      // this recursive function runs forever. You will need a way to stop it in your app
+      // refreshAccess(
+      //   accessTokenRequest.data.data.refresh_token,
+      //   accessTokenRequest.data.data.expires_in
+      // );
       res.redirect(
         url.format({
           pathname: '/restricted-page/',
