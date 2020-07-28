@@ -66,7 +66,7 @@
         );
         const orderSnData = await orderSnResponse.json();
         if (orderSnData.order_sn) {
-          console.log('orderSn', orderSnData.order_sn);
+          // console.log('orderSn', orderSnData.order_sn);
           window.location.href = `https://www.ddpurse.com/desktop/open/order?order_sn=${orderSnData.order_sn}`;
         } else
           document.getElementById('order-status').innerText =
