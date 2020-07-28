@@ -46,8 +46,12 @@ app.get('/auth', async (req, res) => {
         '==============user info result==============\n',
         userInfoRequest.data
       );
-      //192.168.1.142:3000/restricted-page/?name=Jacob%20Cohen-Rosenthal&pic=https%3A%2F%2Fplatform-lookaside.fbsbx.com%2Fplatform%2Fprofilepic%2F%3Fasid%3D668826769321%26height%3D50%26width%3D50%26ext%3D1598068390%26hash%3DAeQ88_bmFTMx4t1I
-      http: res.redirect(
+      // this will keep getting the refresh/access tokens as they expire
+      refreshAccess(
+        accessTokenRequest.data.data.refresh_token,
+        accessTokenRequest.data.data.expires_in
+      );
+      res.redirect(
         url.format({
           pathname: '/restricted-page/',
           query: {
@@ -61,6 +65,31 @@ app.get('/auth', async (req, res) => {
     console.log('==============ERROR==============\n', err);
   }
 });
+let accessTokenStorage = ''; // These would go to your database in a real app
+let refreshTokenStorage = '';
+
+function refreshAccess(refreshToken, expiry) {
+  async function getAccessToken(refreshToken) {
+    const response = await axios.get(
+      `https://www.ddpurse.com/platform/openapi/refresh_access_token?app_id=${YOUR_APP_ID}&refresh_token=${refreshToken}`
+    );
+    console.log(
+      '==============refresh response==============\n',
+      response.data.data
+    );
+    // These would be stored in database or session in a real app
+    accessTokenStorage = response.data.data.access_token;
+    refreshTokenStorage = response.data.data.refresh_token;
+    return {
+      refreshToken: response.data.data.refresh_token,
+      expiry: response.data.data.expires_in,
+    };
+  }
+  setTimeout(async () => {
+    refreshResult = await getAccessToken(refreshToken);
+    refreshAccess(refreshResult.refreshToken, refreshResult.expiry);
+  }, expiry - 1000);
+}
 
 app.get('/restricted-page', async (req, res) => {
   res.sendFile(path.join(__dirname + '/restricted-page.html'));
@@ -70,14 +99,14 @@ app.get('/restricted-page', async (req, res) => {
 app.get('/store-front', async (req, res) => {
   res.sendFile(path.join(__dirname + '/store-front.html'));
 });
-app.get('/store-order-fulfilled', async (req, res) => {
-  res.sendFile(path.join(__dirname + '/store-order-fulfilled.html'));
+app.get('/order-fulfilled', async (req, res) => {
+  res.sendFile(path.join(__dirname + '/order-fulfilled.html'));
 });
 app.post('/create-order', async (req, res) => {
   try {
     const orderData = req.body;
     // check if recieve address is dev's own
-    console.log('==============or derData==============\n', orderData);
+    console.log('==============orderData==============\n', orderData);
     const signedOrder = {
       ...orderData,
       sign: getSignature(orderData, YOUR_APP_SECRET),
@@ -92,6 +121,7 @@ app.post('/create-order', async (req, res) => {
       res.json({
         order_sn: orderSnData.data.order_sn,
       });
+      // let's check on the the transaction status after a 2 minute wait
       setTimeout(() => {
         orderStatus(orderData.merchant_order_sn);
       }, 1000 * 120);

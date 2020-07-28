@@ -24,9 +24,11 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const userName = urlParams.get('name');
-    document.getElementById('user-name').innerHTML = 'Hello ' + userName;
+    userName ? document.getElementById('user-name').innerHTML = 'Hello ' + userName :
+      document.getElementById('user-name').innerHTML = 'User not found';
     const userPic = urlParams.get('pic');
-    document.getElementById('user-pic').src = userPic;
+    userPic ? document.getElementById('user-pic').src = userPic : document.getElementById('user-pic').alt =
+      'Avatar not found ';
   </script>
 </body>
 
