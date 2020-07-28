@@ -112,7 +112,7 @@ app.post('/create-order', async (req, res) => {
       sign: getSignature(orderData, YOUR_APP_SECRET),
     };
     const orderSnResponse = await axios.post(
-      'https://www.ddpurse.com/openapi/create_order',
+      'https://www.ddpurse.com/platform/openapi/create_order',
       signedOrder
     );
     const orderSnData = orderSnResponse.data;

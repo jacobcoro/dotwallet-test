@@ -51,7 +51,7 @@
           order_amount: 546, // can't be lower than 546
           nonce_str: new Date().toString(),
           notice_uri: 'http://192.168.1.142:3000/payment-result', // replace 192.168.1.142 with your IP
-          redirect_uri: 'http://192.168.1.142:3000/store-order-fulfilled', // replace 192.168.1.142 with your IP
+          redirect_uri: 'http://192.168.1.142:3000/order-fulfilled', // replace 192.168.1.142 with your IP
         };
         const orderSnResponse = await fetch(
           'http://192.168.1.142:3000/create-order', // replace 192.168.1.142 with your IP
