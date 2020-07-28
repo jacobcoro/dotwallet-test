@@ -6,6 +6,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const url = require('url');
+var ip = require('ip');
+console.log(ip.address());
 
 dotenv.config({ path: './.env' });
 const PORT = process.env.PORT || 3000;
@@ -191,7 +193,7 @@ app.listen(PORT, () =>
     `DotWallet example app listening at ${
       process.env.NODE_ENV === 'production'
         ? 'production host'
-        : 'localhost:' + PORT
+        : ip.address() + ':' + PORT
     }`
   )
 );

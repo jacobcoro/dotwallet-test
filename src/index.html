@@ -26,8 +26,9 @@
   <script src="./config.js"></script>
 
   <script>
+    console.log(`${APP_URL}auth`)
     document.getElementById('button-link').href =
-      `https://www.ddpurse.com/openapi/get_code?app_id=${APP_ID}&redirect_uri=${APP_URL}auth/`
+      `https://www.ddpurse.com/openapi/get_code?app_id=${APP_ID}&redirect_uri=${APP_URL}auth`
   </script>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
