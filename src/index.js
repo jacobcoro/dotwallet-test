@@ -6,6 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const url = require('url');
+import config from './config';
 
 dotenv.config({ path: './.env' });
 const PORT = process.env.PORT || 3000;
@@ -69,6 +70,7 @@ let accessTokenStorage = ''; // These would go to your database in a real app
 let refreshTokenStorage = '';
 
 function refreshAccess(refreshToken, expiry) {
+  console.log('expiry', expiry);
   async function getAccessToken(refreshToken) {
     const response = await axios.get(
       `https://www.ddpurse.com/platform/openapi/refresh_access_token?app_id=${YOUR_APP_ID}&refresh_token=${refreshToken}`
@@ -88,7 +90,7 @@ function refreshAccess(refreshToken, expiry) {
   setTimeout(async () => {
     refreshResult = await getAccessToken(refreshToken);
     refreshAccess(refreshResult.refreshToken, refreshResult.expiry);
-  }, expiry - 1000);
+  }, expiry);
 }
 
 app.get('/restricted-page', async (req, res) => {
@@ -186,5 +188,5 @@ function getSignature(orderData, appSecret) {
 }
 
 app.listen(PORT, () =>
-  console.log(`DotWallet example app listening at http://localhost:${PORT}`)
+  console.log(`DotWallet example app listening at ${config.APP_URL}`)
 );

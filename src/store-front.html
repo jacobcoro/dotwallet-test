@@ -26,12 +26,12 @@
       <li class="list-group-item mb-2">
         Bananas
         <img src="./assets/bananas.png" alt="bananas" width="50px" />
-        <button class="btn btn-secondary btn-sm" id="banana-button" type="button">546 satoshis</button>
+        <button disabled class="btn btn-secondary btn-sm" type="button">546 satoshis</button>
       </li>
       <li class="list-group-item mb-2">
         Bananas
         <img src="./assets/bananas.png" alt="bananas" width="50px" />
-        <button class="btn btn-secondary btn-sm" id="banana-button" type="button">546 satoshis</button>
+        <button disabled class="btn btn-secondary btn-sm" type="button">546 satoshis</button>
       </li>
       <p id="order-status"></p>
     </ul>
@@ -39,22 +39,23 @@
 
   <!-- UUID package -->
   <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
+  <script src="config.js"></script>
   <script>
     document
       .getElementById('banana-button')
       .addEventListener('click', async () => {
         document.getElementById('order-status').innerText = '';
         const orderData = {
-          app_id: '89d001043806644fdb4fb14099ff6be5', // replace with your app id
+          app_id: APP_ID, // replace with your app id
           merchant_order_sn: uuidv4(),
           item_name: 'bananas',
           order_amount: 546, // can't be lower than 546
           nonce_str: new Date().toString(),
-          notice_uri: 'http://192.168.1.142:3000/payment-result', // replace 192.168.1.142 with your IP
-          redirect_uri: 'http://192.168.1.142:3000/order-fulfilled', // replace 192.168.1.142 with your IP
+          notice_uri: APP_URL + 'payment-result', // replace  with your IP
+          redirect_uri: APP_URL + 'order-fulfilled', // replace with your IP
         };
         const orderSnResponse = await fetch(
-          'http://192.168.1.142:3000/create-order', // replace 192.168.1.142 with your IP
+          APP_URL + 'create-order', // replace with your IP
           {
             method: 'POST',
             body: JSON.stringify(orderData),

@@ -14,13 +14,16 @@
     <a class="navbar-brand" href="/">
       <img src="./assets/logo/awesome-logo.svg" width="30" height="30" alt="">
     </a>
-    <a href="http://192.168.1.142:3000/store-front" class="navlink"></a>
+    <a id="store-link" href="http://192.168.1.142:3000/store-front" class="navlink"></a>
   </nav>
   <div class="p-3 container d-flex d-flex flex-column align-items-center justify-content-center">
     <h1 id="user-name"></h1>
     <img id="user-pic" src="" alt="profile pic" />
-    <a class="btn btn-primary btn-lg m-2" href="http://192.168.1.142:3000/store-front">Go to the store</a>
+    <a id="store-button" class="btn btn-primary btn-lg m-2" href="http://192.168.1.142:3000/store-front">Go to the
+      store</a>
   </div>
+  <script src="config.js">
+  </script>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const userName = urlParams.get('name');
@@ -29,6 +32,8 @@
     const userPic = urlParams.get('pic');
     userPic ? document.getElementById('user-pic').src = userPic : document.getElementById('user-pic').alt =
       'Avatar not found ';
+    document.getElementById('store-link').href = APP_URL + 'store-front'
+    document.getElementById('store-button').href = APP_URL + 'store-front'
   </script>
 </body>
 
