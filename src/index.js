@@ -48,12 +48,7 @@ app.get('/auth', async (req, res) => {
         '==============user info result==============\n',
         userInfoRequest.data
       );
-      // this refreshAccess function will keep getting the refresh/access tokens as they expire
-      // this recursive function runs forever. You will need a way to stop it in your app
-      // refreshAccess(
-      //   accessTokenRequest.data.data.refresh_token,
-      //   accessTokenRequest.data.data.expires_in
-      // );
+
       res.redirect(
         url.format({
           pathname: '/restricted-page/',
@@ -71,28 +66,21 @@ app.get('/auth', async (req, res) => {
 let accessTokenStorage = ''; // These would go to your database in a real app
 let refreshTokenStorage = '';
 
-function refreshAccess(refreshToken, expiry) {
-  console.log('expiry', expiry);
-  async function getAccessToken(refreshToken) {
-    const response = await axios.get(
-      `https://www.ddpurse.com/platform/openapi/refresh_access_token?app_id=${YOUR_APP_ID}&refresh_token=${refreshToken}`
-    );
-    console.log(
-      '==============refresh response==============\n',
-      response.data.data
-    );
-    // These would be stored in database or session in a real app
-    accessTokenStorage = response.data.data.access_token;
-    refreshTokenStorage = response.data.data.refresh_token;
-    return {
-      refreshToken: response.data.data.refresh_token,
-      expiry: response.data.data.expires_in,
-    };
-  }
-  setTimeout(async () => {
-    refreshResult = await getAccessToken(refreshToken);
-    refreshAccess(refreshResult.refreshToken, refreshResult.expiry);
-  }, expiry * 1000 - 3000);
+async function refreshAccess(refreshToken) {
+  const response = await axios.get(
+    `https://www.ddpurse.com/platform/openapi/refresh_access_token?app_id=${YOUR_APP_ID}&refresh_token=${refreshToken}`
+  );
+  console.log(
+    '==============refresh response==============\n',
+    response.data.data
+  );
+  // These would be stored in database or session in a real app
+  accessTokenStorage = response.data.data.access_token;
+  refreshTokenStorage = response.data.data.refresh_token;
+  return {
+    refreshToken: response.data.data.refresh_token,
+    expiry: response.data.data.expires_in,
+  };
 }
 
 app.get('/restricted-page', async (req, res) => {
