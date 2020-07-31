@@ -18,6 +18,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('src'));
 
+/**
+ *
+ * ============================AUTHENTICATION============================
+ *
+ */
 app.get('/auth', async (req, res) => {
   // console.log('req, res', req, res);
   try {
@@ -55,6 +60,7 @@ app.get('/auth', async (req, res) => {
           query: {
             name: userInfoRequest.data.data.user_name,
             pic: userInfoRequest.data.data.user_avatar,
+            user_id: userInfoRequest.data.data.user_open_id,
           },
         })
       );
@@ -87,7 +93,11 @@ app.get('/restricted-page', async (req, res) => {
   res.sendFile(path.join(__dirname + '/restricted-page.html'));
 });
 
-/** Payment example: */
+/**
+ *
+ * ============================PAYMENT============================
+ *
+ */
 app.get('/store-front', async (req, res) => {
   res.sendFile(path.join(__dirname + '/store-front.html'));
 });
@@ -176,6 +186,46 @@ function getSignature(orderData, appSecret) {
 
   return sign;
 }
+/**
+ *
+ * ============================AUTOMATIC PAYMENTS============================
+ *
+ */
+app.get('/autopayment-store', async (req, res) => {
+  res.sendFile(path.join(__dirname + '/autopayment-store.html'));
+});
+
+app.post('/create-autopayment', async (req, res) => {
+  try {
+    const orderData = req.body;
+    // check if recieve address is dev's own
+    console.log('==============orderData==============\n', orderData);
+    const orderWithSecret = {
+      ...orderData,
+      secret: YOUR_APP_SECRET,
+    };
+    const orderResponse = await axios.post(
+      'https://www.ddpurse.com/openapi/pay_small_money',
+      orderWithSecret
+    );
+    const orderResponseData = orderResponse.data;
+    console.log(
+      '==============orderResponseData==============',
+      orderResponseData
+    );
+    if (orderResponseData.data) {
+      res.json(orderResponseData.data);
+    } else {
+      res.json({
+        error: orderResponseData.msg,
+      });
+      throw orderResponseData;
+    }
+  } catch (err) {
+    console.log('==============err==============\n', err);
+    res.send('error');
+  }
+});
 
 app.listen(PORT, () =>
   console.log(
