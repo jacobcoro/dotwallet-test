@@ -227,6 +227,97 @@ app.post('/create-autopayment', async (req, res) => {
   }
 });
 
+/**
+ *
+ * ============================SAVE DATA ON CHAIN============================
+ *
+ */
+const savedDataTxns = []; // In real app could store in DB. Save a list of txns to retrieve data
+
+app.post('/save-data', async (req, res) => {
+  try {
+    const data = req.body;
+    // check if recieve address is dev's own
+    console.log('==============data==============\n', data);
+    const getHostedOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        appid: YOUR_APP_ID,
+        appsecret: YOUR_APP_SECRET,
+      },
+      method: 'POST',
+      data: {
+        coin_type: 'BSV',
+      },
+    };
+    const getHostedAccount = await axios(
+      'https://www.ddpurse.com/platform/openapi/v2/get_hosted_account',
+      getHostedOptions
+    );
+    const getHostedData = getHostedAccount.data;
+    console.log('==============getHostedData==============', getHostedData);
+    if (!getHostedData.data.address) {
+      throw getHostedData.msg;
+    }
+    const getBalanceOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        appid: YOUR_APP_ID,
+        appsecret: YOUR_APP_SECRET,
+      },
+      method: 'POST',
+      data: {
+        coin_type: 'BSV',
+      },
+    };
+    const getBalance = await axios(
+      'https://www.ddpurse.com/platform/openapi/v2/get_hosted_account_balance',
+      getBalanceOptions
+    );
+    const getBalanceData = getBalance.data;
+    console.log('==============getBalanceData==============', getBalanceData);
+    if (!getBalanceData.data.confirm && getBalanceData.data.confirm !== 0) {
+      console.log(
+        'getBalanceData.data.confirm;, getBalanceData.data.confirm;',
+        getBalanceData.data.confirm
+      );
+      throw getBalanceData;
+    }
+
+    if (getBalanceData.data.confirm + getBalanceData.data.unconfirm < 700)
+      throw 'developer wallet balance too low';
+    const saveDataOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        appid: YOUR_APP_ID,
+        appsecret: YOUR_APP_SECRET,
+      },
+      method: 'POST',
+      data: {
+        coin_type: 'BSV',
+        data: JSON.stringify(data),
+        data_type: 0,
+      },
+    };
+    const saveData = await axios(
+      'https://www.ddpurse.com/platform/openapi/v2/push_chain_data',
+      saveDataOptions
+    );
+    const saveDataData = saveData.data;
+    console.log('==============getBalanceData==============', saveDataData);
+    savedDataTxns.push({
+      ...saveDataData.data,
+      timestamp: new Date(),
+      tag: 'banana-price',
+    }); //in a real app this would go to DB
+    res.json(saveDataData.data);
+  } catch (err) {
+    console.log(err.msg, err.data, err.message, err.response);
+    console.log('==============err==============\n', err);
+    res.json(err);
+  }
+});
+
 app.listen(PORT, () =>
   console.log(
     `DotWallet example app listening at ${
