@@ -139,7 +139,8 @@ app.post('/create-order', async (req, res) => {
 });
 
 app.get('/payment-result', (req, res) => {
-  console.log('==============payment-result req==============\n', req);
+  // the response from 'notice_uri' will be in the request queries
+  console.log('==============payment-result req==============\n', req.query);
 });
 
 const orderStatus = async (merchant_order_sn) => {
