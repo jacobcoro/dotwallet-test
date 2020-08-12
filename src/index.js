@@ -83,6 +83,7 @@ app.get('/payment-result', (req, res) => {
  * ============================AUTOMATIC PAYMENTS============================
  *
  */
+
 app.get('/autopayment-store', async (req, res) => {
   res.sendFile(path.join(__dirname + '/autopayment-store.html'));
 });
@@ -98,6 +99,7 @@ app.post('/create-autopayment', async (req, res) => {
  * ============================SAVE DATA ON CHAIN============================
  *
  */
+
 const savedDataTxns = []; // In real app could store in DB. Save a list of txns to retrieve data
 
 app.post('/save-data', async (req, res) => {
