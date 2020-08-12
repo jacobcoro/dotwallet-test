@@ -23,6 +23,7 @@ app.use(express.static('src'));
  * ============================AUTHENTICATION============================
  *
  */
+
 app.get('/auth', async (req, res) => {
   // console.log('req, res', req, res);
   try {
@@ -98,6 +99,7 @@ app.get('/restricted-page', async (req, res) => {
  * ============================PAYMENT============================
  *
  */
+
 app.get('/store-front', async (req, res) => {
   res.sendFile(path.join(__dirname + '/store-front.html'));
 });
@@ -192,6 +194,7 @@ function getSignature(orderData, appSecret) {
  * ============================AUTOMATIC PAYMENTS============================
  *
  */
+
 app.get('/autopayment-store', async (req, res) => {
   res.sendFile(path.join(__dirname + '/autopayment-store.html'));
 });
@@ -233,6 +236,7 @@ app.post('/create-autopayment', async (req, res) => {
  * ============================SAVE DATA ON CHAIN============================
  *
  */
+
 const savedDataTxns = []; // In real app could store in DB. Save a list of txns to retrieve data
 
 app.post('/save-data', async (req, res) => {
