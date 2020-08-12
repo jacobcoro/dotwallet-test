@@ -29,8 +29,8 @@
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const userName = urlParams.get('name');
-    const userId = urlParams.get('user_id');
+    const userName = urlParams.get('user_name');
+    const userId = urlParams.get('user_open_id');
     console.log(userId)
     console.log(`https://www.ddpurse.com/openapi/set_pay_config?app_id=${APP_ID}
     &redirect_uri=${APP_URL}autopayment-store?user_id=${userId}`)
@@ -38,7 +38,7 @@
       ?
       (document.getElementById('user-name').innerHTML = 'Hello ' + userName) :
       (document.getElementById('user-name').innerHTML = 'User not found');
-    const userPic = urlParams.get('pic');
+    const userPic = urlParams.get('user_avatar');
     userPic
       ?
       (document.getElementById('user-pic').src = userPic) :
